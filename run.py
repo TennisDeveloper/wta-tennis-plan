@@ -119,6 +119,7 @@ def validate_numbers_data(values):
     if there aren't exactly 7 values.
     """
     try: 
+        [float(value)  for value in values]
         if len(values) != 7:
             raise ValueError(
                 f"Exactly 7 values are requested, you have provided {len(values)}"
@@ -133,6 +134,7 @@ def validate_yes_no_data(values):
     if there aren't exactly 7 values.
     """
     try: 
+
         if len(values) != 7:
             raise ValueError(
                 f"Exactly 7 values are requested, you have provided {len(values)}"
