@@ -68,13 +68,14 @@ def get_mental_training_data():
     of the week, separated by commas.
     """
     print("\nPlease enter if you had the mental training session during the week. Please input each day separately.")
-    print("Your answer should be either Yes or No for each day of the week, separated by commas.")
+    print("Your answer should be either 'yes' or 'no' for each day of the week, separated by commas.")
     print("Please start from mental sessions on Saturday and continue until the next Friday.")
     print("Remember that your goal is to have mental session before your tournament.")
-    print("Example: Yes, No, No, No, No, No, No \n ")
+    print("Example: yes, no, no, no, no, no, no \n ")
 
     data_str_mental_training = input("Enter your data here: ")
-    mental_training_data = data_str_mental_training.split(",")
+    data_str_mental_training_wo_spaces = data_str_mental_training.replace(" ", "")
+    mental_training_data = data_str_mental_training_wo_spaces.split(",")
     validate_yes_no_data(mental_training_data)
 
 def get_nutrition_data():
@@ -84,13 +85,14 @@ def get_nutrition_data():
     eating any food containing gluteen, lactose or drinking alcohol.
     """
     print("\nPlease enter your nutrition info of the week. Please input each day separately.")
-    print("Your answer should be seven values, either Ok or in case you ate or drank anything containing gluteen, lactose or alcohol, please write either gluteen or lactose or alcohol. Do this for each day of the week, separated by commas.")
+    print("Your answer should be seven values, either 'ok' or in case you ate or drank anything containing gluteen, lactose or alcohol, please write either gluteen or lactose or alcohol. Do this for each day of the week, separated by commas.")
     print("Please start from nutrition evaluation on Saturday and continue until next Friday.")
     print("Remember that your goal is not to eat food containing gluteen or lactose or drink alcohol.")
-    print("Example: Ok, Ok, gluteen, lactose, alcohol, Ok, Ok \n ")
+    print("Example: ok, ok, gluteen, lactose, alcohol, ok, ok \n ")
 
-    data_str_nutrition = input("Enter your data here: ")
-    nutrition_data = data_str_nutrition.split(",")
+    data_str_nutrition = str(input("Enter your data here: "))
+    data_str_nutrition_wo_spaces = data_str_nutrition.replace(" ","")
+    nutrition_data = data_str_nutrition_wo_spaces.split(",")
     validate_nutrition_data(nutrition_data)
 
 def get_tournaments_data():
@@ -100,14 +102,15 @@ def get_tournaments_data():
     tournament or not.
     """
     print("\nPlease enter your tournament participation info of the week. Please input each day separately.")
-    print("Your answer should be seven values, either Yes if you played a tournament or No if you didn't.")
+    print("Your answer should be seven values, either 'yes' if you played a tournament or 'no' if you didn't.")
     print("Please input your data for each day of the week, separated by commas.")
     print("Please start from Saturday and continue until the next Friday.")
     print("Remember that your goal is to participate at least on two tournaments per month.")
-    print("Example: Yes, Yes, No, No, No, No, No \n ")
+    print("Example: yes, yes, no, no, no, no, no \n ")
 
     data_str_tournaments = input("Enter your data here: ")
-    tournaments_data = data_str_tournaments.split(",")
+    data_str_tournaments_wo_spaces = data_str_tournaments.replace(" ","")
+    tournaments_data = data_str_tournaments_wo_spaces.split(",")
     validate_yes_no_data(tournaments_data)
 
 
@@ -129,11 +132,21 @@ def validate_numbers_data(values):
 
 def validate_yes_no_data(values):
     """
-    Inside the try validates if the values provided are from the list [Yes, No]. 
-    Raises ValueError if strings have different values than the list [Yes, No], or
+    Inside the try validates if the values provided are from the list [yes, no]. 
+    Raises ValueError if strings have different values than the list [yes, no], or
     if there aren't exactly 7 values.
     """
     try: 
+
+        valid_values = ['yes', 'no']
+
+        if all(elem in valid_values for elem in values):
+            print("The input string contains only valid values.")
+        else:
+            raise ValueError(
+                f"The input string contains invalid value: {values}"
+            )
+         
 
         if len(values) != 7:
             raise ValueError(
@@ -144,25 +157,37 @@ def validate_yes_no_data(values):
 
 def validate_nutrition_data(values):
     """
-    Inside the try validates if the values provided are from the list [Yes, gluteen, lactose, alcohol]. 
-    Raises ValueError if strings have different values than the list [Yes, gluteen, lactose, alcohol], or
+    Inside the try validates if the values provided are from the list [ok, gluteen, lactose, alcohol]. 
+    Raises ValueError if strings have different values than the list [ok, gluteen, lactose, alcohol], or
     if there aren't exactly 7 values.
     """
     try: 
+
+        valid_values = ['ok', 'gluteen', 'lactose', 'alcohol']
+
+        if all(elem in valid_values for elem in values):
+            print("The input string contains only valid values.")
+        else:
+            raise ValueError(
+                f"The input string contains invalid value: {values}"
+            )
+           
+
         if len(values) != 7:
             raise ValueError(
                 f"Exactly 7 values are requested, you have provided {len(values)}"
             )
+        
     except ValueError as e:
         print(f"Invalid data: {e}, please input valid data into the terminal.\n")
 
 
 
-get_hours_of_tennis_training_data()
-get_hours_of_fitness_training_data()
-get_hours_of_sleeping_data()
-get_mental_training_data()
-get_nutrition_data()
+#get_hours_of_tennis_training_data()
+#get_hours_of_fitness_training_data()
+#get_hours_of_sleeping_data()
+#get_mental_training_data()
+#get_nutrition_data()
 get_tournaments_data()
 
 
