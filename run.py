@@ -271,7 +271,7 @@ def update_sleeping_data_worksheet(data):
     sleeping_worksheet = SHEET.worksheet('HoursOfSleeping').get_all_values()
     last_row_sleeping_worksheet = sleeping_worksheet[-1]
     current_week_first_cell = int(last_row_sleeping_worksheet[0]) + 1
-    current_week_last_cell = sum(data)
+    current_week_last_cell = sum(data)/ len(data)
     data.append(current_week_last_cell)
     data.insert(0,current_week_first_cell)
 
@@ -284,6 +284,14 @@ def update_mental_training_data_worksheet(data):
     Update the 'MentalTraining' worksheet in Google Sheets
     """
     print("Updating mental training worksheet...\n")
+    mental_worksheet = SHEET.worksheet('MentalTraining').get_all_values()
+    last_row_mental_worksheet = mental_worksheet[-1]
+    current_week_first_cell = int(last_row_mental_worksheet[0]) + 1
+    current_week_last_cell = data.count("yes")
+    print(current_week_last_cell)
+    data.append(current_week_last_cell)
+    data.insert(0,current_week_first_cell)
+
     mental_worksheet = SHEET.worksheet('MentalTraining')
     mental_worksheet.append_row(data)
     print("Mental training worksheet updated successfully!\n")
@@ -293,8 +301,16 @@ def update_nutrition_data_worksheet(data):
     Update the 'Nutrition' worksheet in Google Sheets
     """
     print("Updating nutrition worksheet...\n")
-    mental_worksheet = SHEET.worksheet('Nutrition')
-    mental_worksheet.append_row(data)
+    nutrition_worksheet = SHEET.worksheet('Nutrition').get_all_values()
+    last_row_nutrition_worksheet = nutrition_worksheet[-1]
+    current_week_first_cell = int(last_row_nutrition_worksheet[0]) + 1
+    current_week_last_cell = data.count("gluteen") + data.count("lactose") + data.count("alcohol")
+    print(current_week_last_cell)
+    data.append(current_week_last_cell)
+    data.insert(0,current_week_first_cell)
+
+    nutrition_worksheet = SHEET.worksheet('Nutrition')
+    nutrition_worksheet.append_row(data)
     print("Nutrition worksheet updated successfully!\n")
 
 
@@ -303,6 +319,14 @@ def update_tournament_data_worksheet(data):
     Update the 'TournamentsOverview' worksheet in Google Sheets
     """
     print("Updating tournaments overview worksheet...\n")
+    tournaments_worksheet = SHEET.worksheet('TournamentsOverview').get_all_values()
+    last_row_tournaments_worksheet = tournaments_worksheet[-1]
+    current_week_first_cell = int(last_row_tournaments_worksheet[0]) + 1
+    current_week_last_cell = data.count("yes")
+    print(current_week_last_cell)
+    data.append(current_week_last_cell)
+    data.insert(0,current_week_first_cell)
+
     tournaments_worksheet = SHEET.worksheet('TournamentsOverview')
     tournaments_worksheet.append_row(data)
     print("Tournaments overview worksheet updated successfully!\n")
