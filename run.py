@@ -240,22 +240,83 @@ def update_tennis_training_worksheet(data):
     tennis_worksheet.append_row(data)
     print("Tennis training worksheet updated successfully!\n")
 
+def update_fitness_training_worksheet(data):
+    """
+    Update the 'HoursOfFitnessTraining' worksheet in Google Sheets
+    """
+    print("Updating fitness training worksheet...\n")
+    fitness_worksheet = SHEET.worksheet('HoursOfFitnessTraining')
+    fitness_worksheet.append_row(data)
+    print("Fitness training worksheet updated successfully!\n")
+
+def update_sleeping_data_worksheet(data):
+    """
+    Update the 'HoursOfSleeping' worksheet in Google Sheets
+    """
+    print("Updating sleeping worksheet...\n")
+    sleeping_worksheet = SHEET.worksheet('HoursOfSleeping')
+    sleeping_worksheet.append_row(data)
+    print("Sleeping worksheet updated successfully!\n")
+
+def update_mental_training_data_worksheet(data):
+    """
+    Update the 'MentalTraining' worksheet in Google Sheets
+    """
+    print("Updating mental training worksheet...\n")
+    mental_worksheet = SHEET.worksheet('MentalTraining')
+    mental_worksheet.append_row(data)
+    print("Mental training worksheet updated successfully!\n")
+
+def update_nutrition_data_worksheet(data):
+    """
+    Update the 'Nutrition' worksheet in Google Sheets
+    """
+    print("Updating nutrition worksheet...\n")
+    mental_worksheet = SHEET.worksheet('Nutrition')
+    mental_worksheet.append_row(data)
+    print("Nutrition worksheet updated successfully!\n")
+
+
+def update_tournament_data_worksheet(data):
+    """
+    Update the 'TournamentsOverview' worksheet in Google Sheets
+    """
+    print("Updating tournaments overview worksheet...\n")
+    tournaments_worksheet = SHEET.worksheet('TournamentsOverview')
+    tournaments_worksheet.append_row(data)
+    print("Tournaments overview worksheet updated successfully!\n")
+
+
+# All program functions
+def main():
+    """
+    Run all program functions.
+    """
+
+    training_data_tennis = get_hours_of_tennis_training_data()
+    hours_of_tennis_training_data = [float(num) for num in training_data_tennis]
+    update_tennis_worksheet = update_tennis_training_worksheet(hours_of_tennis_training_data)
+
+    training_data_fitness = get_hours_of_fitness_training_data()
+    hours_of_fitness_training_data = [float(num) for num in training_data_fitness]
+    update_fitness_worksheet = update_fitness_training_worksheet(hours_of_fitness_training_data)
+
+    sleeping_data = get_hours_of_sleeping_data()
+    hours_of_sleeping_data = [float(num) for num in sleeping_data]
+    update_sleeping_worksheet = update_sleeping_data_worksheet(hours_of_sleeping_data)
+
+    mental_training_data = get_mental_training_data()
+    update_mental_training_worksheet = update_mental_training_data_worksheet(mental_training_data)
+
+    nutrition_data = get_nutrition_data()
+    update_nutrition_worksheet = update_nutrition_data_worksheet(nutrition_data)
+
+    tournaments_data = get_tournaments_data()
+    update_tournament_worksheet = update_tournament_data_worksheet(tournaments_data)
 
 
 
-training_data_tennis = get_hours_of_tennis_training_data()
-hours_of_tennis_training_data = [float(num) for num in training_data_tennis]
-update_tennis_worksheet = update_tennis_training_worksheet(hours_of_tennis_training_data)
-
-
-
-
-#get_hours_of_tennis_training_data()
-#get_hours_of_fitness_training_data()
-#get_hours_of_sleeping_data()
-#get_mental_training_data()
-#get_nutrition_data()
-#get_tournaments_data()
+main()
 
 
 
