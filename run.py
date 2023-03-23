@@ -236,8 +236,15 @@ def update_tennis_training_worksheet(data):
     Update the 'HoursOfTennisTraining' worksheet in Google Sheets
     """
     print("Updating tennis training worksheet...\n")
-    tennis_worksheet = SHEET.worksheet('HoursOfTennisTraining')
-    tennis_worksheet.append_row(data)
+    tennis_worksheet = SHEET.worksheet('HoursOfTennisTraining').get_all_values()
+    last_row_tennis_worksheet = tennis_worksheet[-1]
+    current_week_first_cell = int(last_row_tennis_worksheet[0]) + 1
+    current_week_last_cell = sum(data)
+    data.append(current_week_last_cell)
+    data.insert(0,current_week_first_cell)
+
+    tennis_worksheet_update = SHEET.worksheet('HoursOfTennisTraining')
+    tennis_worksheet_update.append_row(data)
     print("Tennis training worksheet updated successfully!\n")
 
 def update_fitness_training_worksheet(data):
@@ -245,6 +252,13 @@ def update_fitness_training_worksheet(data):
     Update the 'HoursOfFitnessTraining' worksheet in Google Sheets
     """
     print("Updating fitness training worksheet...\n")
+    fitness_worksheet = SHEET.worksheet('HoursOfFitnessTraining').get_all_values()
+    last_row_fitness_worksheet = fitness_worksheet[-1]
+    current_week_first_cell = int(last_row_fitness_worksheet[0]) + 1
+    current_week_last_cell = sum(data)
+    data.append(current_week_last_cell)
+    data.insert(0,current_week_first_cell)
+
     fitness_worksheet = SHEET.worksheet('HoursOfFitnessTraining')
     fitness_worksheet.append_row(data)
     print("Fitness training worksheet updated successfully!\n")
@@ -254,6 +268,13 @@ def update_sleeping_data_worksheet(data):
     Update the 'HoursOfSleeping' worksheet in Google Sheets
     """
     print("Updating sleeping worksheet...\n")
+    sleeping_worksheet = SHEET.worksheet('HoursOfSleeping').get_all_values()
+    last_row_sleeping_worksheet = sleeping_worksheet[-1]
+    current_week_first_cell = int(last_row_sleeping_worksheet[0]) + 1
+    current_week_last_cell = sum(data)
+    data.append(current_week_last_cell)
+    data.insert(0,current_week_first_cell)
+
     sleeping_worksheet = SHEET.worksheet('HoursOfSleeping')
     sleeping_worksheet.append_row(data)
     print("Sleeping worksheet updated successfully!\n")
@@ -315,7 +336,7 @@ def main():
     update_tournament_worksheet = update_tournament_data_worksheet(tournaments_data)
 
 
-
+print("Welcome to the WTA Tennis Plan automation!\n")
 main()
 
 
