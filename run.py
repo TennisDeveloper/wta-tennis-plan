@@ -18,7 +18,7 @@ SHEET = GSPREAD_CLIENT.open('WTA_Tennis_Plan')
 def get_hours_of_tennis_training_data():
     """
     Get "number of tennis training hours" input from the user. Input should be a list of hours per each day 
-    of the week, separated by commas.
+    of the week, separated by commas. The loop will repeatedly request data until it is valid.
     """
     while True:
         print("Please enter the number of tennis training hours per week for each day separately.")
@@ -33,12 +33,13 @@ def get_hours_of_tennis_training_data():
         if validate_numbers_data(hours_of_tennis_training_data):
             print("Data is valid!")
             break
-    
+
+    return hours_of_tennis_training_data
 
 def get_hours_of_fitness_training_data():
     """
     Get "number of fitness training hours" input from the user. Input should be a list of hours per each day 
-    of the week, separated by commas.
+    of the week, separated by commas. The loop will repeatedly request data until it is valid.
     """
 
     while True:
@@ -54,12 +55,13 @@ def get_hours_of_fitness_training_data():
         if validate_numbers_data(hours_of_fitness_training_data):
             print("Data is valid!")
             break
+    return hours_of_fitness_training_data
 
 
 def get_hours_of_sleeping_data():
     """
     Get "number of sleeping hours" input from the user. Input should be a list of hours per each day 
-    of the week, separated by commas.
+    of the week, separated by commas. The loop will repeatedly request data until it is valid.
     """
     while True:
             
@@ -75,13 +77,15 @@ def get_hours_of_sleeping_data():
         if validate_numbers_data(hours_of_sleeping_data):
             print("Data is valid!")
             break
+    
+    return hours_of_sleeping_data
 
 
 
 def get_mental_training_data():
     """
     Get "mental training session" input from the user. Input should be a list of mental training sessions per each day 
-    of the week, separated by commas.
+    of the week, separated by commas. The loop will repeatedly request data until it is valid.
     """
     while True:
         print("\nPlease enter if you had the mental training session during the week. Please input each day separately.")
@@ -96,12 +100,14 @@ def get_mental_training_data():
         if validate_yes_no_data(mental_training_data):
             print("Data is valid!")
             break
+    
+    return mental_training_data
 
 def get_nutrition_data():
     """
     Get "nutrition data" input from the user. Input should be a list of nutrition evaluation per each day 
     of the week, separated by comma. The aim is to monitor if the user was eating healthy or he was 
-    eating any food containing gluteen, lactose or drinking alcohol.
+    eating any food containing gluteen, lactose or drinking alcohol. The loop will repeatedly request data until it is valid.
     """
 
     while True:
@@ -118,12 +124,14 @@ def get_nutrition_data():
         if validate_nutrition_data(nutrition_data):
             print("Data is valid!")
             break
+    
+    return nutrition_data
 
 def get_tournaments_data():
     """
     Get "tournaments data" input from the user. Input should be a list of tournament participations per each day 
     of the week, separated by commas. The aim is to monitor if the user on a given day has participated on a
-    tournament or not.
+    tournament or not. The loop will repeatedly request data until it is valid.
     """
 
     while True:
@@ -141,6 +149,8 @@ def get_tournaments_data():
         if validate_yes_no_data(tournaments_data):
             print("Data is valid!")
             break
+    
+    return tournaments_data
 
 
 
@@ -220,6 +230,24 @@ def validate_nutrition_data(values):
     
     return True
 
+#Following functions update the WTA Tennis Plan Google Worksheet
+def update_tennis_training_worksheet(data):
+    """
+    Update the 'HoursOfTennisTraining' worksheet in Google Sheets
+    """
+    print("Updating tennis training worksheet...\n")
+    tennis_worksheet = SHEET.worksheet('HoursOfTennisTraining')
+    tennis_worksheet.append_row(data)
+    print("Tennis training worksheet updated successfully!\n")
+
+
+
+
+training_data_tennis = get_hours_of_tennis_training_data()
+hours_of_tennis_training_data = [float(num) for num in training_data_tennis]
+update_tennis_worksheet = update_tennis_training_worksheet(hours_of_tennis_training_data)
+
+
 
 
 #get_hours_of_tennis_training_data()
@@ -227,9 +255,7 @@ def validate_nutrition_data(values):
 #get_hours_of_sleeping_data()
 #get_mental_training_data()
 #get_nutrition_data()
-get_tournaments_data()
-
-
+#get_tournaments_data()
 
 
 
