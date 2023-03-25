@@ -21,13 +21,11 @@ def get_hours_of_tennis_training_data():
     of the week, separated by commas. The loop will repeatedly request data until it is valid.
     """
     while True:
-        print("Please enter the number of tennis training hours per week for each day separately.")
-        print("Data should be seven numbers, separated by commas.")
-        print("Please start from tennis training hours on Saturday  and continue until the next Friday.")
+        print_statements("tennis", "numbers")
         print("Remember that your goal is to achieve 10 hours of training per week.")
         print("Example: 1, 1.5, 2, 0, 2, 3, 0 \n ")
 
-        data_str_tennis_hours = input("Enter your data here: ")
+        data_str_tennis_hours = input("Enter your data here: \n")
         hours_of_tennis_training_data = data_str_tennis_hours.split(",")
         
         if validate_numbers_data(hours_of_tennis_training_data):
@@ -36,6 +34,7 @@ def get_hours_of_tennis_training_data():
 
     return hours_of_tennis_training_data
 
+
 def get_hours_of_fitness_training_data():
     """
     Get "number of fitness training hours" input from the user. Input should be a list of hours per each day 
@@ -43,35 +42,29 @@ def get_hours_of_fitness_training_data():
     """
 
     while True:
-        print("\nPlease enter the number of fitness training hours per week for each day separately.")
-        print("Data should be seven numbers, separated by commas.")
-        print("Please start from fitness training hours on Saturday and continue until the next Friday.")
+        print_statements("fitness", "numbers")
         print("Remember that your goal is to achieve 5 hours of fitness training per week.")
         print("Example: 1, 1, 0.5, 0, 1, 0.5, 0 \n ")
 
-        data_str_fitness_hours = input("Enter your data here: ")
+        data_str_fitness_hours = input("Enter your data here: \n")
         hours_of_fitness_training_data = data_str_fitness_hours.split(",")
-        validate_numbers_data(hours_of_fitness_training_data)
+        
         if validate_numbers_data(hours_of_fitness_training_data):
             print("Data is valid!")
             break
     return hours_of_fitness_training_data
-
 
 def get_hours_of_sleeping_data():
     """
     Get "number of sleeping hours" input from the user. Input should be a list of hours per each day 
     of the week, separated by commas. The loop will repeatedly request data until it is valid.
     """
-    while True:
-            
-        print("\nPlease enter the number of sleeping hours per week for each day separately.")
-        print("Data should be seven numbers, separated by commas.")
-        print("Please start from sleeping hours on Saturday and continue until the next Friday.")
+    while True:  
+        print_statements("sleeping", "numbers")
         print("Remember that your goal is to achieve 9 hours of sleep per day.")
         print("Example: 8, 9, 8, 6, 5.5, 7, 6.5 \n ")
 
-        data_str_sleeping_hours = input("Enter your data here: ")
+        data_str_sleeping_hours = input("Enter your data here: \n")
         hours_of_sleeping_data = data_str_sleeping_hours.split(",")
         
         if validate_numbers_data(hours_of_sleeping_data):
@@ -80,20 +73,17 @@ def get_hours_of_sleeping_data():
     
     return hours_of_sleeping_data
 
-
-
 def get_mental_training_data():
     """
     Get "mental training session" input from the user. Input should be a list of mental training sessions per each day 
     of the week, separated by commas. The loop will repeatedly request data until it is valid.
     """
     while True:
-        print("\nPlease enter if you had the mental training session during the week. Please input each day separately.")
-        print("Your answer should be either 'yes' or 'no' for each day of the week, separated by commas.")
-        print("Please start from mental sessions on Saturday and continue until the next Friday.")
+        print_statements("mental", "values")
         print("Remember that your goal is to have mental session before your tournament.")
+        print("Your answer should be either 'yes' or 'no'.")
         print("Example: yes, no, no, no, no, no, no \n ")
-        data_str_mental_training = input("Enter your data here: ")
+        data_str_mental_training = input("Enter your data here: \n")
         data_str_mental_training_wo_spaces = data_str_mental_training.replace(" ", "")
         mental_training_data = data_str_mental_training_wo_spaces.split(",")
         
@@ -111,13 +101,13 @@ def get_nutrition_data():
     """
 
     while True:
-        print("\nPlease enter your nutrition info of the week. Please input each day separately.")
-        print("Your answer should be seven values, either 'ok' or in case you ate or drank anything containing gluteen, lactose or alcohol, please write either gluteen or lactose or alcohol. Do this for each day of the week, separated by commas.")
-        print("Please start from nutrition evaluation on Saturday and continue until next Friday.")
+        print_statements("nutrition", "values")
         print("Remember that your goal is not to eat food containing gluteen or lactose or drink alcohol.")
+        print('''Your input should be 'ok' if you did everything properly. In case you ate or drank anything 
+        containing gluteen, lactose or alcohol, please write either gluteen or lactose or alcohol.''')
         print("Example: ok, ok, gluteen, lactose, alcohol, ok, ok \n ")
 
-        data_str_nutrition = str(input("Enter your data here: "))
+        data_str_nutrition = str(input("Enter your data here: \n"))
         data_str_nutrition_wo_spaces = data_str_nutrition.replace(" ","")
         nutrition_data = data_str_nutrition_wo_spaces.split(",")
         
@@ -135,14 +125,12 @@ def get_tournaments_data():
     """
 
     while True:
-        print("\nPlease enter your tournament participation info of the week. Please input each day separately.")
-        print("Your answer should be seven values, either 'yes' if you played a tournament or 'no' if you didn't.")
-        print("Please input your data for each day of the week, separated by commas.")
-        print("Please start from Saturday and continue until the next Friday.")
+        print_statements("tournaments", "values")
         print("Remember that your goal is to participate at least on two tournaments per month.")
+        print("Your input should be either 'yes' if you played a tournament or 'no' if you didn't.")
         print("Example: yes, yes, no, no, no, no, no \n ")
 
-        data_str_tournaments = input("Enter your data here: ")
+        data_str_tournaments = input("Enter your data here: \n")
         data_str_tournaments_wo_spaces = data_str_tournaments.replace(" ","")
         tournaments_data = data_str_tournaments_wo_spaces.split(",")
         
@@ -152,7 +140,20 @@ def get_tournaments_data():
     
     return tournaments_data
 
+#print statements for the input data functions
+def print_statements(training_category, training_type):
+    """
+    Print statements for the input data functions
+    """
+    if training_category == "hours":
+        print_line_1 = f'Please enter the number of {training_category} hours per week for each day separately.' 
+    else:
+        print_line_1 = f'Please enter your {training_category} data information per week for each day separately.'
 
+    print_line_2 = f'Data should be seven {training_type}, separated by commas.'
+    print_line_3 = f'Please start from {training_type} on Saturday and continue until the next Friday.'
+    input_intro_for_user = print(print_line_1 + " " + print_line_2 + " " + print_line_3 )
+    return input_intro_for_user
 
 #Validations of data inputs:
 def validate_numbers_data(values):
@@ -231,6 +232,7 @@ def validate_nutrition_data(values):
     return True
 
 #Following functions update the WTA Tennis Plan Google Worksheet
+
 def update_tennis_training_worksheet(data):
     """
     Update the 'HoursOfTennisTraining' worksheet in Google Sheets
@@ -312,7 +314,6 @@ def update_nutrition_data_worksheet(data):
     nutrition_worksheet = SHEET.worksheet('Nutrition')
     nutrition_worksheet.append_row(data)
     print("Nutrition worksheet updated successfully!\n")
-
 
 def update_tournament_data_worksheet(data):
     """
