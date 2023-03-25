@@ -232,7 +232,7 @@ def validate_nutrition_data(values):
     return True
 
 #Following functions update the WTA Tennis Plan Google Worksheet
-def update_worksheet(data, sheet, metric):
+def update_worksheet(data, sheet, metric, training_type, lower_bound, upper_bound):
     """
     Update WTA Tennis Plan worksheet with the user input and calculated input
     """
@@ -240,7 +240,7 @@ def update_worksheet(data, sheet, metric):
     worksheet = SHEET.worksheet(sheet).get_all_values()
     last_row_worksheet = worksheet[-1]
     current_week_first_cell = int(last_row_worksheet[0]) + 1
-    current_week_last_cell = calculate_summary_of_week(data, metric)
+    current_week_last_cell = calculate_summary_of_week(data,sheet, metric, training_type, lower_bound, upper_bound)
     data.append(current_week_last_cell)
     data.insert(0,current_week_first_cell)
 
@@ -248,24 +248,68 @@ def update_worksheet(data, sheet, metric):
     worksheet_update.append_row(data)
     print(f"{sheet} worksheet updated successfully!\n")
 
-def calculate_summary_of_week(data, metric):
+def calculate_summary_of_week(data,sheet, metric, training_type, lower_bound, upper_bound):
     """
     Calculate sum of user input data
     """
     if metric == "addition":
         summary_metric = sum(data)
-        print(summary_metric)
+        evaluate_training(summary_metric,sheet, training_type, 'trained', lower_bound, upper_bound)
         return summary_metric
 
     elif metric == "average_value":
         summary_metric = sum(data) / len(data)
+        evaluate_training(summary_metric,sheet, training_type, 'slept', lower_bound, upper_bound)
         return summary_metric
     elif metric == "count_case":
         summary_metric = data.count("gluteen") + data.count("lactose") + data.count("alcohol")
+        evaluate_training(summary_metric,sheet, training_type, 'ate', lower_bound, upper_bound)
         return summary_metric
     elif metric == "count_yes":
         summary_metric = data.count("yes")
+        if sheet == "TournamentsOverview":
+            evaluate_training(summary_metric,sheet, training_type, 'played', lower_bound, upper_bound)
+        elif sheet == "MentalTraining":
+            evaluate_training(summary_metric, sheet, training_type, 'had mental training for', lower_bound, upper_bound)
         return summary_metric
+
+#Following functions evaluate the user performance for the last week
+def evaluate_training(summary_metric, sheet, training_type, activity, lower_bound, upper_bound):
+    """
+    Evaluate progress of tennis training of the last week.
+    """
+    if summary_metric >= lower_bound and summary_metric <= upper_bound:
+        print(f'Congrats, you have achieved your weekly goal in {training_type}!')
+        if sheet == 'HoursOfTennisTraining' or sheet == "HoursOfFitnessTraining" or sheet == "MentalTraining":
+            if summary_metric == 1:
+                print(f'You {activity} {summary_metric} hour.')
+            elif summary_metric != 1:
+                print(f'You {activity} {summary_metric} hours.')
+        if sheet == "HoursOfSleeping":
+                print(f'You {activity} {round(summary_metric,2)} hours on average.')
+        if sheet == "Nutrition":
+            print(f'You {activity} healthy.')
+        if sheet == "TournamentsOverview":
+            print('Congrats, you played a tournament this week, hopefully you won!')
+    elif summary_metric > upper_bound:
+        if sheet == "Nutrition":
+            print(f'You {activity} unhealthy.')
+        else:
+            print('You were to harsh on you this week! Do less next week!')
+    else:
+        print(f"You haven't achieved your {training_type} goal of the week, do more!")
+        if sheet == 'HoursOfTennisTraining' or sheet == "HoursOfFitnessTraining" or sheet == "MentalTraining":
+            if summary_metric == 1:
+                print(f'You {activity} {summary_metric} hour.')
+            elif summary_metric != 1:
+                print(f'You {activity} {summary_metric} hours.')
+        if sheet == "HoursOfSleeping":
+                print(f'You {activity} {round(summary_metric,2)} hours on average.')
+        if sheet == "Nutrition":
+            print(f'You {activity} unhealthy.')
+        if sheet == "TournamentsOverview":
+            print("You didn't play a tournament this week, try playing next week!")
+
 
 # All program functions
 def main():
@@ -275,24 +319,24 @@ def main():
 
     training_data_tennis = get_hours_of_tennis_training_data()
     hours_of_tennis_training_data = [float(num) for num in training_data_tennis]
-    update_tennis_worksheet = update_worksheet(hours_of_tennis_training_data, 'HoursOfTennisTraining', 'addition')
+    update_tennis_worksheet = update_worksheet(hours_of_tennis_training_data, 'HoursOfTennisTraining', 'addition','tennis', 9,10)
 
     training_data_fitness = get_hours_of_fitness_training_data()
     hours_of_fitness_training_data = [float(num) for num in training_data_fitness]
-    update_fitness_worksheet = update_worksheet(hours_of_fitness_training_data, 'HoursOfFitnessTraining', 'addition')
+    update_fitness_worksheet = update_worksheet(hours_of_fitness_training_data, 'HoursOfFitnessTraining', 'addition', 'fitness',4,5)
 
     sleeping_data = get_hours_of_sleeping_data()
     hours_of_sleeping_data = [float(num) for num in sleeping_data]
-    update_sleeping_worksheet = update_worksheet(hours_of_sleeping_data, 'HoursOfSleeping', 'average_value')
+    update_sleeping_worksheet = update_worksheet(hours_of_sleeping_data, 'HoursOfSleeping', 'average_value','sleeping',8,9)
 
     mental_training_data = get_mental_training_data()
-    update_mental_training_worksheet = update_worksheet(mental_training_data, 'MentalTraining', 'count_yes')
+    update_mental_training_worksheet = update_worksheet(mental_training_data, 'MentalTraining', 'count_yes','mental training',1,2)
 
     nutrition_data = get_nutrition_data()
-    update_nutrition_worksheet = update_worksheet(nutrition_data, 'Nutrition', 'count_case')
+    update_nutrition_worksheet = update_worksheet(nutrition_data, 'Nutrition', 'count_case','eating',0,0)
 
     tournaments_data = get_tournaments_data()
-    update_tournament_worksheet = update_worksheet(tournaments_data, 'TournamentsOverview', 'count_yes')
+    update_tournament_worksheet = update_worksheet(tournaments_data, 'TournamentsOverview', 'count_yes', 'tournaments',1,1)
 
 
 print("Welcome to the WTA Tennis Plan automation! Let's evaluate your progress to become a proffesional tennis player!\n")
