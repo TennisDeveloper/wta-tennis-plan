@@ -1,6 +1,5 @@
 import gspread
 from google.oauth2.service_account import Credentials
-from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -28,7 +27,7 @@ def get_hours_of_tennis_training_data():
     until it is valid.
     """
     while True:
-        print_statements("tennis", "numbers")
+        print_statements("tennis", "hours")
         print("Your goal is to achieve 10 hours of training per week.")
         print("Example: 1, 1.5, 2, 0, 2, 3, 0 \n ")
 
@@ -50,7 +49,7 @@ def get_hours_of_fitness_training_data():
     """
 
     while True:
-        print_statements("fitness", "numbers")
+        print_statements("fitness", "hours")
         print("Your goal is to achieve 5 hours of fitness training per week.")
         print("Example: 1, 1, 0.5, 0, 1, 0.5, 0 \n ")
 
@@ -70,7 +69,7 @@ def get_hours_of_sleeping_data():
     until it is valid.
     """
     while True:
-        print_statements("sleeping", "numbers")
+        print_statements("sleeping", "hours")
         print("Your goal is to achieve 9 hours of sleep per day.")
         print("Example: 8, 9, 8, 6, 5.5, 7, 6.5 \n ")
 
@@ -113,11 +112,11 @@ def get_nutrition_data():
     """
     while True:
         print_statements("nutrition", "values")
-        print('''Your goal is not to eat food containing gluteen or lactose
-        or drink alcohol.''')
-        print('''Your input should be 'ok' if you did everything properly.
-        In case you ate or drank anything containing gluteen, lactose or
-        alcohol, please write either gluteen or lactose or alcohol.''')
+        print(f'''Your goal is not to eat food containing gluteen \
+or lactose or drink alcohol. Your input should be 'ok' \
+if you did everything properly. In case you ate or drank \
+anything containing gluteen, lactose or alcohol, please \
+write either gluteen or lactose or alcohol.''')
         print("Example: ok, ok, gluteen, lactose, alcohol, ok, ok \n ")
 
         data_str_nutrition = str(input("Enter your data here: \n"))
@@ -140,8 +139,8 @@ def get_tournaments_data():
     while True:
         print_statements("tournaments", "values")
         print("Your goal is to participate on one tournament per week.")
-        print('''Your input should be either 'yes' if you played a tournament
-        or 'no' if you didn't.''')
+        print('''Your input should be either 'yes' if you played a tournament \
+or 'no' if you didn't.''')
         print("Example: yes, yes, no, no, no, no, no \n ")
 
         data_str_tournaments = input("Enter your data here: \n")
@@ -162,18 +161,19 @@ def print_statements(training_category, training_type):
     """
     Print statements for the input data functions
     """
-    if training_category == "hours":
-        line_1 = f'Please enter the number of {training_category} hours \
-        per week for each day separately.'
-    else:
-        line_1 = f'Please enter your {training_category} data \
-        information per week for each day separately.'
+    if training_type == "hours":
+        line_1 = f'Please enter the number of {training_category} hours'
+        line_2 = f'per week for each day separately.'
 
-    line_2 = f'Data should be seven {training_type}, \
-    separated by commas.'
-    line_3 = f'Please start from {training_type} on Saturday \
-    and continue until the next Friday.'
-    input_intro_for_user = print(line_1 + " " + line_2 + " " + line_3)
+    else:
+        line_1 = f'Please enter your {training_category} data'
+        line_2 = f'per week for each day separately.'
+
+    line_3 = f'Data should be seven values, separated by commas.'
+    line_4 = f'Please start from {training_type} on Saturday'
+    line_5 = f'and continue until the next Friday.'
+    input_intro_for_user = print(line_1 + " " + line_2 + " " + line_3
+                                 + line_4 + " " + line_5)
     return input_intro_for_user
 
 
@@ -316,8 +316,8 @@ def ev_training(summary_metric, sheet, training_type, activity, l_bound,
     Evaluate progress of tennis training of the last week.
     """
     if summary_metric >= l_bound and summary_metric <= u_bound:
-        print(f'''Congrats, you have achieved your weekly goal in
-              {training_type}!''')
+        print(f'''Congrats, you have achieved your weekly goal in \
+{training_type}!''')
         if (sheet == 'HoursOfTennisTraining' or
            sheet == "HoursOfFitnessTraining" or
            sheet == "MentalTraining"):
@@ -326,21 +326,21 @@ def ev_training(summary_metric, sheet, training_type, activity, l_bound,
             elif summary_metric != 1:
                 print(f'You {activity} {summary_metric} hours.')
         if sheet == "HoursOfSleeping":
-            print(f'''You {activity} {round(summary_metric,2)}
-                      hours on average.''')
+            print(f'''You {activity} {round(summary_metric,2)} \
+hours on average.''')
         if sheet == "Nutrition":
             print(f'You {activity} healthy.')
         if sheet == "TournamentsOverview":
-            print('''Congrats, you played a tournament this week,
-                  hopefully you won!''')
+            print('''Congrats, you played a tournament this week, \
+hopefully you won!''')
     elif summary_metric > u_bound:
         if sheet == "Nutrition":
             print(f'You {activity} unhealthy.')
         else:
             print('You were to harsh on you this week! Do less next week!')
     else:
-        print(f'''You haven't achieved your {training_type}
-              goal of the week, do more!''')
+        print(f'''You haven't achieved your {training_type} \
+goal of the week, do more!''')
         if (sheet == 'HoursOfTennisTraining' or
            sheet == 'HoursOfFitnessTraining' or
            sheet == 'MentalTraining'):
@@ -349,13 +349,13 @@ def ev_training(summary_metric, sheet, training_type, activity, l_bound,
             elif summary_metric != 1:
                 print(f'You {activity} {summary_metric} hours.')
         if sheet == "HoursOfSleeping":
-            print(f'''You {activity} {round(summary_metric,2)}
-                  hours on average.''')
+            print(f'''You {activity} {round(summary_metric,2)} \
+hours on average.''')
         if sheet == "Nutrition":
             print(f'You {activity} unhealthy.')
         if sheet == "TournamentsOverview":
-            print('''You didn't play a tournament this week,
-                  try playing next week!''')
+            print('''You didn't play a tournament this week, \
+try playing next week!''')
 
 
 # All program functions
@@ -407,7 +407,7 @@ This is the main function from where the program starts.
 """
 
 
-print('''Welcome to the WTA Tennis Plan automation!
-      Let's evaluate your progress to become a
-      proffesional tennis player!\n''')
+print('''Welcome to the WTA Tennis Plan automation! \
+Let's evaluate your progress to become a \
+proffesional tennis player!\n''')
 main()
