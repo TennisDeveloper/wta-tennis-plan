@@ -232,106 +232,40 @@ def validate_nutrition_data(values):
     return True
 
 #Following functions update the WTA Tennis Plan Google Worksheet
-
-def update_tennis_training_worksheet(data):
+def update_worksheet(data, sheet, metric):
     """
-    Update the 'HoursOfTennisTraining' worksheet in Google Sheets
+    Update WTA Tennis Plan worksheet with the user input and calculated input
     """
-    print("Updating tennis training worksheet...\n")
-    tennis_worksheet = SHEET.worksheet('HoursOfTennisTraining').get_all_values()
-    last_row_tennis_worksheet = tennis_worksheet[-1]
-    current_week_first_cell = int(last_row_tennis_worksheet[0]) + 1
-    current_week_last_cell = sum(data)
+    print(f"Updating {sheet} worksheet...\n")
+    worksheet = SHEET.worksheet(sheet).get_all_values()
+    last_row_worksheet = worksheet[-1]
+    current_week_first_cell = int(last_row_worksheet[0]) + 1
+    current_week_last_cell = calculate_summary_of_week(data, metric)
     data.append(current_week_last_cell)
     data.insert(0,current_week_first_cell)
 
-    tennis_worksheet_update = SHEET.worksheet('HoursOfTennisTraining')
-    tennis_worksheet_update.append_row(data)
-    print("Tennis training worksheet updated successfully!\n")
+    worksheet_update = SHEET.worksheet(sheet)
+    worksheet_update.append_row(data)
+    print(f"{sheet} worksheet updated successfully!\n")
 
-def update_fitness_training_worksheet(data):
+def calculate_summary_of_week(data, metric):
     """
-    Update the 'HoursOfFitnessTraining' worksheet in Google Sheets
+    Calculate sum of user input data
     """
-    print("Updating fitness training worksheet...\n")
-    fitness_worksheet = SHEET.worksheet('HoursOfFitnessTraining').get_all_values()
-    last_row_fitness_worksheet = fitness_worksheet[-1]
-    current_week_first_cell = int(last_row_fitness_worksheet[0]) + 1
-    current_week_last_cell = sum(data)
-    data.append(current_week_last_cell)
-    data.insert(0,current_week_first_cell)
+    if metric == "addition":
+        summary_metric = sum(data)
+        print(summary_metric)
+        return summary_metric
 
-    fitness_worksheet = SHEET.worksheet('HoursOfFitnessTraining')
-    fitness_worksheet.append_row(data)
-    print("Fitness training worksheet updated successfully!\n")
-
-def update_sleeping_data_worksheet(data):
-    """
-    Update the 'HoursOfSleeping' worksheet in Google Sheets
-    """
-    print("Updating sleeping worksheet...\n")
-    sleeping_worksheet = SHEET.worksheet('HoursOfSleeping').get_all_values()
-    last_row_sleeping_worksheet = sleeping_worksheet[-1]
-    current_week_first_cell = int(last_row_sleeping_worksheet[0]) + 1
-    current_week_last_cell = sum(data)/ len(data)
-    data.append(current_week_last_cell)
-    data.insert(0,current_week_first_cell)
-
-    sleeping_worksheet = SHEET.worksheet('HoursOfSleeping')
-    sleeping_worksheet.append_row(data)
-    print("Sleeping worksheet updated successfully!\n")
-
-def update_mental_training_data_worksheet(data):
-    """
-    Update the 'MentalTraining' worksheet in Google Sheets
-    """
-    print("Updating mental training worksheet...\n")
-    mental_worksheet = SHEET.worksheet('MentalTraining').get_all_values()
-    last_row_mental_worksheet = mental_worksheet[-1]
-    current_week_first_cell = int(last_row_mental_worksheet[0]) + 1
-    current_week_last_cell = data.count("yes")
-    print(current_week_last_cell)
-    data.append(current_week_last_cell)
-    data.insert(0,current_week_first_cell)
-
-    mental_worksheet = SHEET.worksheet('MentalTraining')
-    mental_worksheet.append_row(data)
-    print("Mental training worksheet updated successfully!\n")
-
-def update_nutrition_data_worksheet(data):
-    """
-    Update the 'Nutrition' worksheet in Google Sheets
-    """
-    print("Updating nutrition worksheet...\n")
-    nutrition_worksheet = SHEET.worksheet('Nutrition').get_all_values()
-    last_row_nutrition_worksheet = nutrition_worksheet[-1]
-    current_week_first_cell = int(last_row_nutrition_worksheet[0]) + 1
-    current_week_last_cell = data.count("gluteen") + data.count("lactose") + data.count("alcohol")
-    print(current_week_last_cell)
-    data.append(current_week_last_cell)
-    data.insert(0,current_week_first_cell)
-
-    nutrition_worksheet = SHEET.worksheet('Nutrition')
-    nutrition_worksheet.append_row(data)
-    print("Nutrition worksheet updated successfully!\n")
-
-def update_tournament_data_worksheet(data):
-    """
-    Update the 'TournamentsOverview' worksheet in Google Sheets
-    """
-    print("Updating tournaments overview worksheet...\n")
-    tournaments_worksheet = SHEET.worksheet('TournamentsOverview').get_all_values()
-    last_row_tournaments_worksheet = tournaments_worksheet[-1]
-    current_week_first_cell = int(last_row_tournaments_worksheet[0]) + 1
-    current_week_last_cell = data.count("yes")
-    print(current_week_last_cell)
-    data.append(current_week_last_cell)
-    data.insert(0,current_week_first_cell)
-
-    tournaments_worksheet = SHEET.worksheet('TournamentsOverview')
-    tournaments_worksheet.append_row(data)
-    print("Tournaments overview worksheet updated successfully!\n")
-
+    elif metric == "average_value":
+        summary_metric = sum(data) / len(data)
+        return summary_metric
+    elif metric == "count_case":
+        summary_metric = data.count("gluteen") + data.count("lactose") + data.count("alcohol")
+        return summary_metric
+    elif metric == "count_yes":
+        summary_metric = data.count("yes")
+        return summary_metric
 
 # All program functions
 def main():
@@ -341,27 +275,27 @@ def main():
 
     training_data_tennis = get_hours_of_tennis_training_data()
     hours_of_tennis_training_data = [float(num) for num in training_data_tennis]
-    update_tennis_worksheet = update_tennis_training_worksheet(hours_of_tennis_training_data)
+    update_tennis_worksheet = update_worksheet(hours_of_tennis_training_data, 'HoursOfTennisTraining', 'addition')
 
     training_data_fitness = get_hours_of_fitness_training_data()
     hours_of_fitness_training_data = [float(num) for num in training_data_fitness]
-    update_fitness_worksheet = update_fitness_training_worksheet(hours_of_fitness_training_data)
+    update_fitness_worksheet = update_worksheet(hours_of_fitness_training_data, 'HoursOfFitnessTraining', 'addition')
 
     sleeping_data = get_hours_of_sleeping_data()
     hours_of_sleeping_data = [float(num) for num in sleeping_data]
-    update_sleeping_worksheet = update_sleeping_data_worksheet(hours_of_sleeping_data)
+    update_sleeping_worksheet = update_worksheet(hours_of_sleeping_data, 'HoursOfSleeping', 'average_value')
 
     mental_training_data = get_mental_training_data()
-    update_mental_training_worksheet = update_mental_training_data_worksheet(mental_training_data)
+    update_mental_training_worksheet = update_worksheet(mental_training_data, 'MentalTraining', 'count_yes')
 
     nutrition_data = get_nutrition_data()
-    update_nutrition_worksheet = update_nutrition_data_worksheet(nutrition_data)
+    update_nutrition_worksheet = update_worksheet(nutrition_data, 'Nutrition', 'count_case')
 
     tournaments_data = get_tournaments_data()
-    update_tournament_worksheet = update_tournament_data_worksheet(tournaments_data)
+    update_tournament_worksheet = update_worksheet(tournaments_data, 'TournamentsOverview', 'count_yes')
 
 
-print("Welcome to the WTA Tennis Plan automation!\n")
+print("Welcome to the WTA Tennis Plan automation! Let's evaluate your progress to become a proffesional tennis player!\n")
 main()
 
 
