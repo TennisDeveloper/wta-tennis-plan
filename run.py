@@ -107,17 +107,17 @@ def get_nutrition_data():
     Get "nutrition data" input from the user. Input should be
     a list of nutrition evaluation per each day of the week,
     separated by comma. The aim is to monitor if the user was eating
-    healthy or he was eating any food containing gluteen, lactose or
+    healthy or he was eating any food containing gluten, lactose or
     drinking alcohol. The loop will repeatedly request data until it is valid.
     """
     while True:
         print_statements("nutrition", "values")
-        print(f'''Your goal is not to eat food containing gluteen \
+        print(f'''Your goal is not to eat food containing gluten \
 or lactose or drink alcohol. Your input should be 'ok' \
 if you did everything properly. In case you ate or drank \
-anything containing gluteen, lactose or alcohol, please \
-write either gluteen or lactose or alcohol.''')
-        print("Example: ok, ok, gluteen, lactose, alcohol, ok, ok \n ")
+anything containing gluten, lactose or alcohol, please \
+write either gluten or lactose or alcohol.''')
+        print("Example: ok, ok, gluten, lactose, alcohol, ok, ok \n ")
 
         data_str_nutrition = str(input("Enter your data here: \n"))
         string_check = data_str_nutrition.replace(" ", "")
@@ -230,13 +230,13 @@ def validate_yes_no_data(values):
 def validate_nutrition_data(values):
     """
     Inside the try validates if the values provided are from the list
-    [ok, gluteen, lactose, alcohol]. Raises ValueError if strings have
-    different values than the list [ok, gluteen, lactose, alcohol], or
+    [ok, gluten, lactose, alcohol]. Raises ValueError if strings have
+    different values than the list [ok, gluten, lactose, alcohol], or
     if there aren't exactly 7 values.
     """
     try:
 
-        valid_values = ['ok', 'gluteen', 'lactose', 'alcohol']
+        valid_values = ['ok', 'gluten', 'lactose', 'alcohol']
 
         if all(elem in valid_values for elem in values):
             print("The input string contains only valid values.")
@@ -294,7 +294,7 @@ def summary(data, sheet, metric, training_type, l_bound, u_bound):
         ev_training(param, sheet, training_type, 'slept', l_bound, u_bound)
         return param
     elif metric == "count_case":
-        param = (data.count("gluteen")
+        param = (data.count("gluten")
                  + data.count("lactose")
                  + data.count("alcohol"))
         ev_training(param, sheet, training_type, 'ate', l_bound, u_bound)
@@ -399,7 +399,7 @@ def main():
     update_tournament_worksheet = upd_wsheet(tournaments_data,
                                              'TournamentsOverview',
                                              'count_yes',
-                                             'tournaments', 1, 1)
+                                             'tournaments', 1, 2)
 
 
 """
